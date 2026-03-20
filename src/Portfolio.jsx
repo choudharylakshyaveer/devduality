@@ -588,7 +588,9 @@ export default function Portfolio() {
                     {["LinkedIn", "GitHub"].map((link) => (
                       <a
                         key={link}
-                        href="#"
+                        href={link === "LinkedIn" ? "https://linkedin.com" : "https://github.com"}
+                        target="_blank"
+                        rel="noreferrer"
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
@@ -743,7 +745,7 @@ export default function Portfolio() {
                 hello@lakshyaveer-amit.dev
               </a>
               <span style={{ width: "0.5rem", height: "0.5rem", backgroundColor: "#d0c6b0", borderRadius: "9999px" }} />
-              <a href="#" style={{ color: "inherit", textDecoration: "none" }}>
+              <a href="https://linkedin.com" target="_blank" rel="noreferrer" style={{ color: "inherit", textDecoration: "none" }}>
                 LinkedIn Profile
               </a>
             </div>
@@ -769,10 +771,17 @@ export default function Portfolio() {
             Lakshyaveer &amp; Amit
           </div>
           <div style={{ display: "flex", gap: "2rem" }}>
-            {["GitHub", "LinkedIn", "Twitter", "Email"].map((link) => (
+            {[
+                { label: "GitHub", url: "https://github.com" },
+                { label: "LinkedIn", url: "https://linkedin.com" },
+                { label: "Twitter", url: "https://twitter.com" },
+                { label: "Email", url: "mailto:hello@example.com" },
+              ].map(({ label, url }) => (
               <a
-                key={link}
-                href="#"
+                key={label}
+                href={url}
+                target="_blank"
+                rel="noreferrer"
                 style={{
                   color: "#78716c",
                   fontFamily: "'Manrope', sans-serif",
@@ -784,7 +793,7 @@ export default function Portfolio() {
                 onMouseEnter={(e) => { e.target.style.color = "#92400e"; e.target.style.opacity = "1"; }}
                 onMouseLeave={(e) => { e.target.style.color = "#78716c"; e.target.style.opacity = "0.8"; }}
               >
-                {link}
+                {label}
               </a>
             ))}
           </div>
