@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import AmitPhoto from "./Amit_Upadhyay.png";
+import LakshyaveerPhoto from "./Lakshyaveer.jpeg";
 
 /* ── Inject fonts & Tailwind CDN ───────────────────────────────────────────── */
 function useHead() {
@@ -207,17 +209,39 @@ function Hero() {
           </div>
         </div>
 
-        {/* Right — image */}
+        {/* Right — dual profile photos */}
         <div className="w-full lg:w-2/5 relative animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-          <div className="aspect-[4/5] bg-surface-container-high rounded-2xl overflow-hidden editorial-shadow relative z-10 border border-black/5">
-            <img
-              alt="Two professional developers collaborating"
-              className="w-full h-full object-cover grayscale contrast-110"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVojEILO6gCtUIlEcHBcBoAhZsGVpDqvvJBdJ3oJbzz7VAr_52C3x9LHLBtm7SserpahgFHWd_sY0vZ4izTPaEzdrh0VIoS6rT5W_ys1ylqBuXaPLJ7BU7q2qTLLM3pYyVEcwDi3DsnFe0LnRMqBIymuyZjehejNxusl2JS1EpMjY9MD8Fy7uTM-C73fCNUEIAIt14MS6MPBI44AMtxELEc_42uvbdoxBxFtlcIm9-_OI7Oxw9KEjBNXMQdLQV9f_Yoce4-pMbS5E"
-            />
+          <div className="flex gap-3 relative z-10">
+            {/* Lakshyaveer — slightly higher */}
+            <div className="flex-1 flex flex-col gap-2" style={{ marginTop: "0" }}>
+              <div className="aspect-[3/4] rounded-2xl overflow-hidden editorial-shadow border border-black/5 bg-surface-container-high">
+                <img
+                  src={LakshyaveerPhoto}
+                  alt="Lakshyaveer Singh"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+              <div className="text-center">
+                <p className="font-headline font-bold text-xs text-on-background tracking-tight">Lakshyaveer Singh</p>
+                <p className="text-secondary text-[10px] uppercase tracking-widest font-medium">Backend · Android</p>
+              </div>
+            </div>
+            {/* Amit — slightly lower */}
+            <div className="flex-1 flex flex-col gap-2" style={{ marginTop: "2.5rem" }}>
+              <div className="aspect-[3/4] rounded-2xl overflow-hidden editorial-shadow border border-black/5 bg-surface-container-high">
+                <img
+                  src={AmitPhoto}
+                  alt="Amit Upadhyay"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+              <div className="text-center">
+                <p className="font-headline font-bold text-xs text-on-background tracking-tight">Amit Upadhyay</p>
+                <p className="text-secondary text-[10px] uppercase tracking-widest font-medium">Full-Stack · API</p>
+              </div>
+            </div>
           </div>
-          <div className="absolute -bottom-6 -left-6 w-32 md:w-48 h-32 md:h-48 bg-primary-container rounded-2xl -z-10 opacity-50" />
-          <div className="absolute -top-6 -right-6 w-24 md:w-32 h-24 md:h-32 border-2 border-primary/20 rounded-full -z-10" />
+          <div className="absolute -top-4 -right-4 w-24 md:w-32 h-24 md:h-32 border-2 border-primary/15 rounded-full -z-10" />
         </div>
       </div>
     </section>
@@ -508,8 +532,8 @@ function Testimonials() {
 ───────────────────────────────────────────────────────────────────────────── */
 function Contact() {
   const people = [
-    { name: "Lakshyaveer Singh", phone: "+91 81304 17748", tel: "+918130417748" },
-    { name: "Amit Upadhyay",     phone: "+91 91401 42098", tel: "+919140142098" },
+    { name: "Lakshyaveer Singh", role: "Backend Architect · Android Engineer", phone: "+91 81304 17748", tel: "+918130417748", photo: LakshyaveerPhoto },
+    { name: "Amit Upadhyay",     role: "Full-Stack Developer · API Engineer",   phone: "+91 91401 42098", tel: "+919140142098", photo: AmitPhoto },
   ];
 
   return (
@@ -525,22 +549,36 @@ function Contact() {
         {/* Contact cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12">
           {people.map((p) => (
-            <div key={p.name} className="bg-surface-container-lowest p-8 rounded-2xl editorial-shadow border border-black/5 transition-transform hover:-translate-y-1">
-              <h3 className="font-headline text-xl font-extrabold mb-4 text-on-background">{p.name}</h3>
-              <div className="space-y-4">
-                <a href={`tel:${p.tel}`} className="flex items-center gap-3 text-secondary hover:text-primary transition-colors font-medium text-sm">
-                  <Icon name="call" className="text-primary text-xl" />
-                  {p.phone}
-                </a>
-                <div className="flex gap-4 pt-2">
-                  <a href="https://linkedin.com" target="_blank" rel="noreferrer"
-                     className="text-[10px] font-bold uppercase tracking-widest text-secondary hover:text-primary transition-colors border-b border-black/5 pb-1">
-                    LinkedIn
+            <div key={p.name} className="bg-surface-container-lowest rounded-2xl editorial-shadow border border-black/5 transition-transform hover:-translate-y-1 overflow-hidden flex flex-col">
+              {/* Photo — full image, no cropping */}
+              <div className="bg-surface-container-low flex items-center justify-center p-4 pt-6">
+                <img
+                  src={p.photo}
+                  alt={p.name}
+                  style={{ width: "100%", maxHeight: "320px", objectFit: "contain", objectPosition: "center top", display: "block" }}
+                />
+              </div>
+              {/* Divider */}
+              <div className="mx-6 border-t border-black/5" />
+              {/* Info */}
+              <div className="px-6 pb-6 pt-4">
+                <h3 className="font-headline text-lg font-extrabold text-on-background leading-tight">{p.name}</h3>
+                <p className="text-[10px] font-medium uppercase tracking-widest text-secondary mb-4 mt-0.5">{p.role}</p>
+                <div className="space-y-3">
+                  <a href={`tel:${p.tel}`} className="flex items-center gap-2.5 text-secondary hover:text-primary transition-colors font-medium text-sm">
+                    <Icon name="call" className="text-primary text-lg" />
+                    {p.phone}
                   </a>
-                  <a href="https://github.com" target="_blank" rel="noreferrer"
-                     className="text-[10px] font-bold uppercase tracking-widest text-secondary hover:text-primary transition-colors border-b border-black/5 pb-1">
-                    GitHub
-                  </a>
+                  <div className="flex gap-4 pt-1">
+                    <a href="https://linkedin.com" target="_blank" rel="noreferrer"
+                       className="text-[10px] font-bold uppercase tracking-widest text-secondary hover:text-primary transition-colors border-b border-black/5 pb-1">
+                      LinkedIn
+                    </a>
+                    <a href="https://github.com" target="_blank" rel="noreferrer"
+                       className="text-[10px] font-bold uppercase tracking-widest text-secondary hover:text-primary transition-colors border-b border-black/5 pb-1">
+                      GitHub
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
