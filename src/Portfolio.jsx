@@ -442,10 +442,26 @@ function AdminDashboard({ onLogout }) {
    AdminLogin is imported from ./AdminLogin.jsx
 ───────────────────────────────────────────────────────────────────────────── */
 function AdminPage({ onBack }) {
-  const [authed, setAuthed] = useState(false);
+  // Persist login across refreshes using sessionStorage.
+  // Session clears automatically when the browser tab is closed.
+  const [authed, setAuthed] = useState(() => {
+    try { return sessionStorage.getItem("admin_authed") === "true"; }
+    catch { return false; }
+  });
+
+  const login = () => {
+    try { sessionStorage.setItem("admin_authed", "true"); } catch {}
+    setAuthed(true);
+  };
+
+  const logout = () => {
+    try { sessionStorage.removeItem("admin_authed"); } catch {}
+    setAuthed(false);
+  };
+
   return authed
-    ? <AdminDashboard onLogout={() => setAuthed(false)} />
-    : <AdminLogin onSuccess={() => setAuthed(true)} onBack={onBack} />;
+    ? <AdminDashboard onLogout={logout} />
+    : <AdminLogin onSuccess={login} onBack={onBack} />;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -610,9 +626,7 @@ function Navbar({ onAdminClick }) {
           {NAV_LINKS.map(({ label, href }) => (
             <a key={label} href={href} className="text-secondary font-medium uppercase tracking-widest text-[10px] hover:text-primary transition-colors">{label}</a>
           ))}
-          <button className="bg-primary text-on-primary rounded-full px-6 py-2.5 font-label text-xs font-bold tracking-tight hover:shadow-lg transition-all active:scale-95">
-            Get in Touch
-          </button>
+          
           <button onClick={onAdminClick} style={{ display: "flex", alignItems: "center", gap: "0.4rem", background: "none", border: "1px solid rgba(27,28,28,0.12)", borderRadius: "999px", padding: "0.45rem 1rem", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#546066", cursor: "pointer", transition: "all 0.2s" }}
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#735c00"; e.currentTarget.style.color = "#735c00"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(27,28,28,0.12)"; e.currentTarget.style.color = "#546066"; }}>
@@ -1004,15 +1018,41 @@ function Footer() {
 ───────────────────────────────────────────────────────────────────────────── */
 export default function Portfolio() {
   useHead();
-  const [showAdmin, setShowAdmin] = useState(false);
 
-  if (showAdmin) {
-    return <AdminPage onBack={() => setShowAdmin(false)} />;
+  // Use URL hash (#admin) as the routing signal so refresh keeps the user on
+  // the correct "page" without needing React Router.
+  const [page, setPage] = useState(() => window.location.hash === "#admin" ? "admin" : "home");
+
+  // Keep the hash in sync when page state changes.
+  useEffect(() => {
+    if (page === "admin") {
+      window.location.hash = "admin";
+    } else {
+      // Remove the hash without adding a history entry
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+  }, [page]);
+
+  // Handle browser back / forward buttons
+  useEffect(() => {
+    const onHashChange = () => {
+      setPage(window.location.hash === "#admin" ? "admin" : "home");
+    };
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
+  if (page === "admin") {
+    return (
+      <AdminPage
+        onBack={() => setPage("home")}
+      />
+    );
   }
 
   return (
     <div className="bg-background text-on-background font-body">
-      <Navbar onAdminClick={() => setShowAdmin(true)} />
+      <Navbar onAdminClick={() => setPage("admin")} />
       <main>
         <Hero />
         <About />
