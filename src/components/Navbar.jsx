@@ -54,13 +54,7 @@ export default function Navbar({ onAdminClick }) {
               </a>
             ))}
 
-            {/* Get in Touch */}
-            <button
-              className="bg-primary text-on-primary rounded-full font-bold tracking-tight transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
-              style={{ padding: "0.5rem 1.25rem", fontSize: "0.75rem", fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            >
-              Get in Touch
-            </button>
+            
 
             {/* Admin */}
             <button
