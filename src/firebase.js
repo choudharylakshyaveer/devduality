@@ -5,7 +5,6 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 // import { getAnalytics } from "firebase/analytics"; // optional
 // import { db } from "./firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDJguarDSeiJfMz5MSdVF0YckkToMZLK9Q",
